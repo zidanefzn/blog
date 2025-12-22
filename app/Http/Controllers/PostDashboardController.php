@@ -83,17 +83,37 @@ class PostDashboardController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Post $post)
     {
-        //
+        return view('dashboard.edit', ['post' => $post]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Post $post)
     {
-        //
+        Validator::make($request->all(), [
+            'tittle' => 'required|unique:posts,tittle' . $post->id,
+            'category_id' => 'required',
+            'body' => 'required'
+        ], [
+            'required' => 'Kolom :attribute harus diisi!'
+        ], [
+            'tittle' => 'judul',
+            'category_id' => 'kategori',
+            'body' => 'tulisan blog'
+        ])->validate();
+
+        $post->update([
+            'tittle' => $request->tittle,
+            'author_id' => Auth::user()->id,
+            'category_id' => $request->category_id,
+            'slug' => Str::slug($request->tittle),
+            'body' => $request->body
+        ]);
+
+        return redirect('/dashboard')->with(['success' => 'Post berhasil diedit!']);
     }
 
     /**

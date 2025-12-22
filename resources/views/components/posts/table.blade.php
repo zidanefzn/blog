@@ -54,8 +54,8 @@
                                 <td class="px-4 py-3">{{ $post->tittle }}</td>
                                 <td class="px-4 py-3">{{ $post->category->name }}</td>
                                 <td class="px-4 py-3">{{ $post->created_at->diffForHumans()}}</td>
-                                <td class="px-4 py-3"><a href="">Edit</a></td>
                                 <td class="px-4 py-3"><a href="/dashboard/{{ $post->slug }}">Detail</a></td>
+                                <td class="px-4 py-3"><a href="/dashboard/{{ $post->slug }}/edit">Edit</a></td>
                                 <td class="px-4 py-3">
                                     <button type="button" class="cursor-pointer" data-modal-target="deleteModal-{{ $post->id }}" data-modal-toggle="deleteModal-{{ $post->id }}">Delete</button>
 
