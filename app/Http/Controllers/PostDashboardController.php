@@ -47,14 +47,15 @@ class PostDashboardController extends Controller
         Validator::make($request->all(), [
             'tittle' => 'required|unique:posts',
             'category_id' => 'required',
-            'body' => 'required'
+            'body' => 'required|min:20'
         ], [
             // semua rule required error messagenya sama
-            'required' => 'Kolom :attribute harus diisi!'
+            'required' => 'Kolom :attribute harus diisi!',
 
             // tiap rule require punya error message sendiri
             // 'tittle.required' => 'judul harus diisi'
             // 'category_id.required' => 'wajib pilih kategori'
+            'body.min' => 'tulisan minimal 20 karakter'
         ], [
             'tittle' => 'judul',
             'category_id' => 'kategori',
