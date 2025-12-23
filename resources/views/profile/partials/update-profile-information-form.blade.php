@@ -13,7 +13,7 @@
         @csrf
     </form>
 
-    <form method="post" action="{{ route('profile.update') }}" class="mt-6 space-y-6">
+    <form method="post" action="{{ route('profile.update') }}" class="mt-6 space-y-6" enctype="multipart/form-data">
         @csrf
         @method('patch')
 
@@ -53,6 +53,20 @@
             @endif
         </div>
 
+        <div>
+            <label class="block mb-2.5 text-sm font-medium text-gray-300" for="avatar">Upload avatar</label>
+            <input class="@error('avatar')
+                    focus:ring-danger
+                @enderror cursor-pointer bg-gray-900 border border-gray-700 text-gray-300 text-sm rounded-base focus:ring-indigo-600 focus:border-indigo-600 block w-full shadow-xs placeholder:text-body" id="avatar" name="avatar" type="file" accept="image/png, image/jpg, image/jpeg">
+                @error('avatar')
+                    <p class="mt-2.5 text-sm text-fg-danger-strong">{{ $message }}</p>
+                @enderror
+        </div>
+
+        <div>
+            <img class="w-14 h-14 rounded-full" src="{{ $user->avatar ? asset('storage/' . $user->avatar) : asset('img/image.png') }}" alt="{{ $user->name }}" id="avatar-preview">
+        </div>
+
         <div class="flex items-center gap-4">
             <x-primary-button>{{ __('Save') }}</x-primary-button>
 
@@ -68,3 +82,19 @@
         </div>
     </form>
 </section>
+
+<script>
+    const input = document.getElementById('avatar');
+    const previewPhoto = () => {
+    const file = input.files;
+        if (file) {
+        const fileReader = new FileReader();
+        const preview = document.getElementById('avatar-preview');
+        fileReader.onload = function(event) {
+            preview.setAttribute('src', event.target.result);
+        }
+        fileReader.readAsDataURL(file[0]);
+        }
+    }
+    input.addEventListener("change", previewPhoto);
+</script>
